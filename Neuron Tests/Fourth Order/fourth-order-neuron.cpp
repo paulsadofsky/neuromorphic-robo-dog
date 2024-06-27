@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <fstream>
 using namespace std;
 
 // Threshold and reset voltages and input current for the membrane
@@ -26,8 +27,14 @@ double i_x[4];
 double i_sum = 0.0;
 double v_temp = 0.0;
 
+
 int main() {
-    for (int a = 0; a < 1000; a++) {
+    // Initiallize output .csv file
+    ofstream outfile;
+    outfile.open("membrane-voltage.csv");
+    outfile << "Time,Voltage,\n";
+
+    for (int a = 0; a < 9; a++) {
         for (int i = 0; i < 4; i++) {
             i_sum = 0;
 
@@ -65,15 +72,18 @@ int main() {
         }
 
         v_mem += (dt / c) * (ext_current - v_mem - i_sum);
-        cout << v_mem << " ";
+        std::cout << v_mem << " ";
+        outfile << a << "," << v_mem << " \"\n";
 
         // Check for spike and resets the membrane potential if spike occurs
         if (v_mem >= v_thresh) {
             v_mem = v_reset;
-            cout << "\nSpike" << endl;
+            std::cout << "\nSpike" << endl;
         }
-        cout << "\n";
+        std::cout << "\n";
     }
+
+    outfile.close();
 
     return 0;
 }
