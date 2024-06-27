@@ -21,7 +21,7 @@ double v_x[3] = {v_reset, v_reset, v_reset};
 // Sets the four alpha, beta, and delta values, with each increasing index correlating to fn, sp, sn and usp respectively
 // Initiallizes each current with the same respective index assignment
 double alpha_x[4] = {1.0, 1.0, 1.0, 1.0};
-double beta_x[4] = {1.0, 1.0, 1.0, 1.0};
+double beta = 1.0;
 double delta_x[4] = {1.0, 1.0, 1.0, 1.0};
 double i_x[4];
 double i_sum = 0.0;
@@ -52,8 +52,8 @@ int main() {
             }
             
             // Calculates each value of i_x and the summation
-            double lower_bound = -(alpha_x[i]/beta_x[i]) + delta_x[i];
-            double upper_bound = (alpha_x[i]/beta_x[i]) + delta_x[i];
+            double lower_bound = -(alpha_x[i]/beta) + delta_x[i];
+            double upper_bound = (alpha_x[i]/beta) + delta_x[i];
             if (v_temp < lower_bound) {
                 i_x[i] = -alpha_x[i];
             }
@@ -61,7 +61,7 @@ int main() {
                 i_x[i] = alpha_x[i];
             }
             else {
-                i_x[i] = beta_x[i]*(v_temp - delta_x[i]);
+                i_x[i] = beta*(v_temp - delta_x[i]);
             }
 
             if (i == 0 || i == 2) {
