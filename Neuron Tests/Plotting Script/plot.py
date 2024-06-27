@@ -13,8 +13,8 @@ plt.ylabel('Membrane Voltage (Vmem) [a.u.]')
 plt.title('Bio-Mimetic Neuron Simulation on Loihi')
 plt.grid(True)
 
-#plt.annotate('Spiking', xy=(2500, -4), xytext=(2500, -4.5), arrowprops=dict(arrowstyle='<->'))
-#plt.annotate('Bursting', xy=(12500, -4), xytext=(12500, -4.5), arrowprops=dict(arrowstyle='<->'))
+plt.annotate('Spiking', xy=(2500, -4), xytext=(2500, -4.5), arrowprops=dict(arrowstyle='<->'))
+plt.annotate('Bursting', xy=(12500, -4), xytext=(12500, -4.5), arrowprops=dict(arrowstyle='<->'))
 
 plt.savefig('plot.png')
 plt.show()
