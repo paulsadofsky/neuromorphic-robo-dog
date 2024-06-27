@@ -34,7 +34,7 @@ int main() {
     outfile.open("membrane-voltage.csv");
     outfile << "Time,Voltage,\n";
 
-    for (int a = 0; a < 9; a++) {
+    for (int a = 0; a < 10000; a++) {
         for (int i = 0; i < 4; i++) {
             i_sum = 0;
 
@@ -73,7 +73,7 @@ int main() {
 
         v_mem += (dt / c) * (ext_current - v_mem - i_sum);
         std::cout << v_mem << " ";
-        outfile << a << "," << v_mem << " \"\n";
+        outfile << a << "," << v_mem << "\n";
 
         // Check for spike and resets the membrane potential if spike occurs
         if (v_mem >= v_thresh) {
