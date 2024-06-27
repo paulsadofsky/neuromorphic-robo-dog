@@ -20,9 +20,9 @@ double v_x[3] = {v_reset, v_reset, v_reset};
 
 // Sets the four alpha, beta, and delta values, with each increasing index correlating to fn, sp, sn and usp respectively
 // Initiallizes each current with the same respective index assignment
-double alpha_x[4] = {1.0, 1.0, 1.0, 1.0};
+double alpha_x[4] = {2.0, 2.0, 1.5, 1.5};
 double beta = 2.0;
-double delta_x[4] = {1.0, 1.0, 1.0, 1.0};
+double delta_x[4] = {0, 0, -1.5, -1.5};
 double i_x[4];
 double i_sum = 0.0;
 double v_temp = 0.0;
