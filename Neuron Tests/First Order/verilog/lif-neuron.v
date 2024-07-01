@@ -3,7 +3,7 @@ module LIF_neuron (
     input wire reset,
     input wire i_ext,
     output reg spike);
-
+    
     parameter tau = 10;
     parameter v_th = 20;
     parameter v_reset = 0;
@@ -24,7 +24,7 @@ module LIF_neuron (
     
     always @(posedge clk)
         begin
-        if (v_mem >= V_th)
+        if (v_mem >= v_th)
             begin
             spike <= 1;
             v_mem <= v_reset;
@@ -35,3 +35,5 @@ module LIF_neuron (
             end
         end
 endmodule
+
+
