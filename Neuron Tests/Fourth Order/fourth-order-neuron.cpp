@@ -47,6 +47,7 @@ int main() {
             else { v_temp = v_x[i-1]; }
             
             if (usePWL) {
+                // PWL FUNCTION
                 double lower_bound = -(alpha_x[i]/beta) + delta_x[i];
                 double upper_bound = (alpha_x[i]/beta) + delta_x[i];
                 if (v_temp < lower_bound) {
@@ -60,6 +61,7 @@ int main() {
                 }
             }
             else {
+                // TANH FUNCTION
                 i_x[i] = alpha_x[i]*tanh(v_temp - delta_x[i]);
             }
 
