@@ -12,7 +12,7 @@ int main() {
     network.getFR()->setExtCurrent(-2.0);
     network.getBL()->setExtCurrent(-2.0);
 
-    network.calculateNetwork(14000);
+    network.calculateNetwork(20000);
     network.exportToCSV(3000);
     
     return 0;

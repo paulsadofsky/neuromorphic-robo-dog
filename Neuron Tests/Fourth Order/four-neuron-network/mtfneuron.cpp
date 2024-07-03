@@ -5,7 +5,7 @@
 #include "mtfneuron.h"
 using namespace std;
 
-// Default constructor that sets the values to the ones provided in python-source-test.py file
+// Default constructor that sets the values to the ones provided in python-neuron-source.py file
 MTFNeuron::MTFNeuron() {
     setAlpha(-2.0, 2.0, -1.5, 1.5);
     setDelta(0, 0, -1.5, -1.5);
