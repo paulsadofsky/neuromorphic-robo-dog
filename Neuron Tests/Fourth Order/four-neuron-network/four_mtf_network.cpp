@@ -50,7 +50,7 @@ void FourMTFNetwork::calculateNetwork(double timesteps) {
 void FourMTFNetwork::exportToCSV() {
     // Initiallize output .csv file
     std::ofstream outfile;
-    outfile.open("../network-membrane-voltage.csv");
+    outfile.open("network-membrane-voltage.csv");
     outfile << "Time,VoltageFL,VoltageFR,VoltageBL,VoltageBR\n";
     std::vector<double> valFL = FL->getValues();
     std::vector<double> valFR = FR->getValues();

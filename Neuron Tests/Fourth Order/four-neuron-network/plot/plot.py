@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('Neuron Tests/Fourth Order/network-membrane-voltage.csv')
+df = pd.read_csv('Neuron Tests/Fourth Order/four-neuron-network/network-membrane-voltage.csv')
 
 time = df['Time']
 voltageFL = df['VoltageFL']
@@ -37,5 +37,5 @@ plt.xlabel('Time')
 plt.ylabel('Membrane Voltage (BACK RIGHT)')
 plt.grid(True)
 
-plt.savefig('network-plot.png')
+plt.savefig('Neuron Tests/Fourth Order/four-neuron-network/plot/network-plot.png')
 plt.show()

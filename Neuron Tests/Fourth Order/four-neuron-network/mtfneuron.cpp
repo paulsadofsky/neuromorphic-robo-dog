@@ -118,7 +118,7 @@ std::vector<double> MTFNeuron::getValues() {
 void MTFNeuron::exportToCSV() {
     // Initiallize output .csv file
     ofstream outfile;
-    outfile.open("../membrane-voltage.csv");
+    outfile.open("membrane-voltage.csv");
     outfile << "Time,Voltage,\n";
 
     for (int i = 0; i < calculatedVal.size(); i++) {
@@ -127,24 +127,3 @@ void MTFNeuron::exportToCSV() {
 
     outfile.close();
 }
-
-/////////////////////////////////////////////////////////////////////////////
-
-// vmem = -1;
-// vx[0] = 0;
-// vx[1] = 0;
-// vx[2] = 0;
-// exti = -1.5;
-// dt = 0.5;
-// ax[0] = -2.0;
-// ax[1] = 2.0;
-// ax[2] = -1.5;
-// ax[3] = 1.5;
-// dx[0] = 0;
-// dx[1] = 0;
-// dx[2] = -1.5;
-// dx[3] = 1.5;
-// tau[0] = 1;
-// tau[1] = 50;
-// tau[2] = 2500;
-// usePWL = false;

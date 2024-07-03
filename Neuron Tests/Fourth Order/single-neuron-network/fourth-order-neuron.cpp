@@ -30,7 +30,7 @@ bool usePWL = false;
 int main() {
     // Initiallize output .csv file
     ofstream outfile;
-    outfile.open("../membrane-voltage.csv");
+    outfile.open("membrane-voltage.csv");
     outfile << "Time,Voltage,\n";
 
     for (int a = 0; a < 14000; a++) {
