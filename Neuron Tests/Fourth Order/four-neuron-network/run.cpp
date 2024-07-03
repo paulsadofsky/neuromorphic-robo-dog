@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     FourMTFNetwork network;
 
-    // Adjusts alpha values of FR and BL to create a shift in paterns
+    // Adjusts external current values of FR and BL to create a shift in paterns
     network.getFR()->setExtCurrent(-2.0);
     network.getBL()->setExtCurrent(-2.0);
 
