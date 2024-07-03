@@ -11,6 +11,8 @@ class MTFNeuron {
         bool usePWL;
         std::vector<double> calculatedVal;
     public:
+        MTFNeuron();
+        ~MTFNeuron();
         void setAlpha(double, double, double, double);
         void setDelta(double, double, double, double);
         void setExtCurrent(double);
@@ -20,6 +22,7 @@ class MTFNeuron {
         void setBeta(double);
         void togglePWL(bool);
         void calculateValues(int);
+        std::vector<double> getValues();
         void exportToCSV();
 };
 
