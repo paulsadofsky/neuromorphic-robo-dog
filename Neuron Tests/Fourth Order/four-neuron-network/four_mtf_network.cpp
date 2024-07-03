@@ -60,3 +60,26 @@ void FourMTFNetwork::exportToCSV() {
 
     outfile.close();
 }
+
+// Prints the calculated values to CSV format with an offset to remove beginning values
+void FourMTFNetwork::exportToCSV(int offset) {
+    // Initiallize output .csv file
+    std::ofstream outfile;
+    outfile.open("network-membrane-voltage.csv");
+    outfile << "Time,VoltageFL,VoltageFR,VoltageBL,VoltageBR\n";
+    std::vector<double> valFL = FL->getValues();
+    std::vector<double> valFR = FR->getValues();
+    std::vector<double> valBL = BL->getValues();
+    std::vector<double> valBR = BR->getValues();
+
+    for (int i = 0; i < valFL.size(); i++) {
+        if (i >= offset) {
+            outfile << i-offset << "," << valFL[i]
+                        << "," << valFR[i]
+                        << "," << valBL[i]
+                        << "," << valBR[i] <<  "\n";
+        }
+    }
+
+    outfile.close();
+}

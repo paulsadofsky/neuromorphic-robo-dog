@@ -21,6 +21,7 @@ class FourMTFNetwork {
         void calculateNetwork(double);
 
         void exportToCSV();
+        void exportToCSV(int);
 };
 
 #endif

@@ -9,11 +9,11 @@ int main() {
     FourMTFNetwork network;
 
     // Adjusts alpha values of FR and BL to create a shift in paterns
-    network.getFR()->setDelta(0, 0, -1.0, -1.0);
-    network.getBL()->setDelta(0, 0, -1.0, -1.0);
+    network.getFR()->setExtCurrent(-2.0);
+    network.getBL()->setExtCurrent(-2.0);
 
     network.calculateNetwork(14000);
-    network.exportToCSV();
+    network.exportToCSV(3000);
     
     return 0;
 }
