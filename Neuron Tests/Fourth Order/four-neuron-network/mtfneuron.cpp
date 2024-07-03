@@ -5,6 +5,7 @@
 #include "mtfneuron.h"
 using namespace std;
 
+// Default constructor that sets the values to the ones provided in python-source-test.py file
 MTFNeuron::MTFNeuron() {
     setAlpha(-2.0, 2.0, -1.5, 1.5);
     setDelta(0, 0, -1.5, -1.5);
@@ -15,10 +16,12 @@ MTFNeuron::MTFNeuron() {
     togglePWL(false);
 }
 
+// Default constructor
 MTFNeuron::~MTFNeuron() {
     calculatedVal.clear();
 }
 
+// Sets alpha values of neuron
 void MTFNeuron::setAlpha(double fn, double sp, double sn, double usp) {
     ax[0] = fn;
     ax[1] = sp;
@@ -26,6 +29,7 @@ void MTFNeuron::setAlpha(double fn, double sp, double sn, double usp) {
     ax[3] = usp;
 }
 
+// Sets delta values of neuron
 void MTFNeuron::setDelta(double fn, double sp, double sn, double usp) {
     dx[0] = fn;
     dx[1] = sp;
@@ -33,18 +37,22 @@ void MTFNeuron::setDelta(double fn, double sp, double sn, double usp) {
     dx[3] = usp;
 }
 
+// Sets beta value of neuron
 void MTFNeuron::setBeta(double beta) {
     b = beta;
 }
 
+// Sets external current of neuron
 void MTFNeuron::setExtCurrent(double i) {
     exti = i;
 }
 
+// Sets timestep of neuron
 void MTFNeuron::setTimeStep(double t) {
     dt = t;
 }
 
+// Sets initial voltages (membrane voltage, V_f, V_s, V_us) of neuron
 void MTFNeuron::setInitV(double mem, double f, double s, double us) {
     vmem = mem;
     vx[0] = f;
@@ -52,16 +60,19 @@ void MTFNeuron::setInitV(double mem, double f, double s, double us) {
     vx[2] = us;
 }
 
+// Sets the time constants (f, s , us) of neuron
 void MTFNeuron::setTau(double f, double s, double us) {
     tau[0] = f;
     tau[1] = s;
     tau[2] = us;
 }
 
+// Sets the boolean variable that switches between PWL and tanh model
 void MTFNeuron::togglePWL(bool togPWL) {
     usePWL = togPWL;
 }
 
+// Calculating the values based on the equations in the ICONS paper
 void MTFNeuron::calculateValues(int timesteps) {
     double i_x[4];
     double i_sum = 0.0;
@@ -111,10 +122,12 @@ void MTFNeuron::calculateValues(int timesteps) {
     }
 }
 
+// Accessor function for the vector of calculated values
 std::vector<double> MTFNeuron::getValues() {
     return calculatedVal;
 }
 
+// Writes calculated neuron values to CSV for individual testing
 void MTFNeuron::exportToCSV() {
     // Initiallize output .csv file
     ofstream outfile;

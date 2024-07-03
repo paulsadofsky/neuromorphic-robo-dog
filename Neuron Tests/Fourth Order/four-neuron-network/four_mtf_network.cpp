@@ -2,7 +2,7 @@
 #include "four_mtf_network.h"
 #include <fstream>
 
-
+// Default constructor that dynamically allocates the four neurons for the network
 FourMTFNetwork::FourMTFNetwork() {
     FL = new MTFNeuron();
     FR = new MTFNeuron();
@@ -10,6 +10,7 @@ FourMTFNetwork::FourMTFNetwork() {
     BR = new MTFNeuron();
 }
 
+// Default destructor that unallocates the four neurons declared to prevent memory leaks
 FourMTFNetwork::~FourMTFNetwork() {
     delete FL;
     delete FR;
@@ -17,22 +18,13 @@ FourMTFNetwork::~FourMTFNetwork() {
     delete BR;
 }
 
-MTFNeuron* FourMTFNetwork::getFL() {
-    return FL;
-}
+// Accessor functions that return the pointers to each neuron in the network
+MTFNeuron* FourMTFNetwork::getFL() { return FL; }
+MTFNeuron* FourMTFNetwork::getFR() { return FR; }
+MTFNeuron* FourMTFNetwork::getBL() { return BL; }
+MTFNeuron* FourMTFNetwork::getBR() { return BR; }
 
-MTFNeuron* FourMTFNetwork::getFR() {
-    return FR;
-}
-
-MTFNeuron* FourMTFNetwork::getBL() {
-    return BL;
-}
-
-MTFNeuron* FourMTFNetwork::getBR() {
-    return BR;
-}
-
+// Sets the dt of each neuron
 void FourMTFNetwork::setTimeStep(double t) {
     FL->setTimeStep(t);
     FR->setTimeStep(t);
@@ -40,6 +32,7 @@ void FourMTFNetwork::setTimeStep(double t) {
     BR->setTimeStep(t);
 }
 
+// Calculates the values of each neuron in the network
 void FourMTFNetwork::calculateNetwork(double timesteps) {
     FL->calculateValues(timesteps);
     FR->calculateValues(timesteps);
@@ -47,6 +40,7 @@ void FourMTFNetwork::calculateNetwork(double timesteps) {
     BR->calculateValues(timesteps);
 }
 
+// Prints the calculated values to CSV format
 void FourMTFNetwork::exportToCSV() {
     // Initiallize output .csv file
     std::ofstream outfile;
