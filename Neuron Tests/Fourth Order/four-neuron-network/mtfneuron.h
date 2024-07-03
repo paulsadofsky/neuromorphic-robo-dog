@@ -20,6 +20,7 @@ class MTFNeuron {
         void setBeta(double);
         void togglePWL(bool);
         void calculateValues(int);
+        void exportToCSV();
 };
 
 #endif

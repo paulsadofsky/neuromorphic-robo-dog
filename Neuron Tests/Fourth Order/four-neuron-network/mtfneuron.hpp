@@ -76,52 +76,56 @@ void MTFNeuron::calculateValues(int timesteps) {
 
     calculatedVal.clear();
 
-    // Initiallize output .csv file
-    ofstream outfile;
-    outfile.open("../membrane-voltage.csv");
-    outfile << "Time,Voltage,\n";
-
-    for (int a = 0; a < timesteps; a++) {
+    for (int i = 0; i < timesteps; i++) {
         i_sum = 0;
 
         // Calculates each value of v_x
-        for(int k = 0; k < 3; k++) {
-            vx[k] += (dt/tau[k])*(vmem - vx[k]);
+        for(int j = 0; j < 3; j++) {
+            vx[j] += (dt/tau[j])*(vmem - vx[j]);
         }
 
-        for (int i = 0; i < 4; i++) {
+        for (int k = 0; k < 4; k++) {
             // Sets the appropriate value of v_x and it's corresponding sign
-            if (i <= 1) { v_temp = vx[i]; }
-            else { v_temp = vx[i-1]; }
+            if (k <= 1) { v_temp = vx[k]; }
+            else { v_temp = vx[k-1]; }
             
             if (usePWL) {
                 // PWL FUNCTION
-                double lower_bound = -(ax[i]/b) + dx[i];
-                double upper_bound = (ax[i]/b) + dx[i];
+                double lower_bound = -(ax[k]/b) + dx[k];
+                double upper_bound = (ax[k]/b) + dx[k];
                 if (v_temp < lower_bound) {
-                    i_x[i] = -abs(ax[i]);
+                    i_x[k] = -abs(ax[k]);
                 }
                 else if (v_temp > upper_bound) {
-                    i_x[i] = abs(ax[i]);
+                    i_x[k] = abs(ax[k]);
                 }
                 else {
-                    i_x[i] = b*(v_temp - dx[i]);
+                    i_x[k] = b*(v_temp - dx[k]);
                 }
             }
             else {
                 // TANH FUNCTION
-                i_x[i] = ax[i]*tanh(v_temp - dx[i]);
+                i_x[k] = ax[k]*tanh(v_temp - dx[k]);
             }
 
             // Sums the current
-            i_sum += i_x[i];
+            i_sum += i_x[k];
         }
 
         // Calculates the new v membrane and prints to display
         vmem += dt * (exti - vmem - i_sum);
         calculatedVal.push_back(vmem);
+    }
+}
 
-        outfile << a << "," << vmem << "\n";
+void MTFNeuron::exportToCSV() {
+    // Initiallize output .csv file
+    ofstream outfile;
+    outfile.open("../membrane-voltage.csv");
+    outfile << "Time,Voltage,\n";
+
+    for (int i = 0; i < calculatedVal.size(); i++) {
+        outfile << i << "," << calculatedVal[i] << "\n";
     }
 
     outfile.close();
