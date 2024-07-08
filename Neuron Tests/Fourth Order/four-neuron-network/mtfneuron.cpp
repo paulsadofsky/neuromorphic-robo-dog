@@ -13,7 +13,7 @@ MTFNeuron::MTFNeuron() {
     setInitV(-1, 0, 0, 0);
     setExtCurrent(-1.5);
     setTimeStep(0.5);
-    togglePWL(false);
+    togglePWL(true);
 }
 
 // Default constructor
@@ -95,8 +95,8 @@ void MTFNeuron::calculateValues(int timesteps) {
             
             if (usePWL) {
                 // PWL FUNCTION
-                double lower_bound = -(ax[k]/b) + dx[k];
-                double upper_bound = (ax[k]/b) + dx[k];
+                double lower_bound = -1 + dx[k];
+                double upper_bound = 1 + dx[k];
                 if (v_temp < lower_bound) {
                     i_x[k] = -1*ax[k];
                 }
@@ -104,7 +104,7 @@ void MTFNeuron::calculateValues(int timesteps) {
                     i_x[k] = ax[k];
                 }
                 else {
-                    i_x[k] = b*(v_temp - dx[k]);
+                    i_x[k] = ax[k]*(v_temp - dx[k]);
                 }
             }
             else {

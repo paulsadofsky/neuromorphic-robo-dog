@@ -19,7 +19,7 @@ double v_x[3] = {0, 0, 0};
 // Initiallizes each current with the same respective index assignment
 double alpha_x[4] = {-2.0, 2.0, -1.5, 1.5};
 double delta_x[4] = {0, 0, -1.5, -1.5};
-double beta = 1;
+double beta_x[4] = {-2.0, 2.0, -1.5, 1.5};
 double i_x[4];
 double i_sum = 0.0;
 double v_temp = 0.0;
@@ -48,8 +48,8 @@ int main() {
             
             if (usePWL) {
                 // PWL FUNCTION
-                double lower_bound = -(alpha_x[i]/beta) + delta_x[i];
-                double upper_bound = (alpha_x[i]/beta) + delta_x[i];
+                double lower_bound = -1 + delta_x[i];
+                double upper_bound = 1 + delta_x[i];
                 if (v_temp < lower_bound) {
                     i_x[i] = -1*alpha_x[i];
                 }
@@ -57,7 +57,7 @@ int main() {
                     i_x[i] = alpha_x[i];
                 }
                 else {
-                    i_x[i] = beta*(v_temp - delta_x[i]);
+                    i_x[i] = alpha_x[i]*(v_temp - delta_x[i]);
                 }
             }
             else {
