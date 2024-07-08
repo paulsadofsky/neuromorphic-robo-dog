@@ -25,7 +25,7 @@ double i_sum = 0.0;
 double v_temp = 0.0;
 
 // Boolean to toggle between using PWL and tanh function
-bool usePWL = false;
+bool usePWL = true;
 
 int main() {
     // Initiallize output .csv file
@@ -51,10 +51,10 @@ int main() {
                 double lower_bound = -(alpha_x[i]/beta) + delta_x[i];
                 double upper_bound = (alpha_x[i]/beta) + delta_x[i];
                 if (v_temp < lower_bound) {
-                    i_x[i] = -abs(alpha_x[i]);
+                    i_x[i] = -1*alpha_x[i];
                 }
                 else if (v_temp > upper_bound) {
-                    i_x[i] = abs(alpha_x[i]);
+                    i_x[i] = alpha_x[i];
                 }
                 else {
                     i_x[i] = beta*(v_temp - delta_x[i]);

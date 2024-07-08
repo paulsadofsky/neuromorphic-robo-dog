@@ -98,10 +98,10 @@ void MTFNeuron::calculateValues(int timesteps) {
                 double lower_bound = -(ax[k]/b) + dx[k];
                 double upper_bound = (ax[k]/b) + dx[k];
                 if (v_temp < lower_bound) {
-                    i_x[k] = -abs(ax[k]);
+                    i_x[k] = -1*ax[k];
                 }
                 else if (v_temp > upper_bound) {
-                    i_x[k] = abs(ax[k]);
+                    i_x[k] = ax[k];
                 }
                 else {
                     i_x[k] = b*(v_temp - dx[k]);
