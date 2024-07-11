@@ -4,15 +4,13 @@
 using namespace std;
 
 // Threshold and reset voltages and input current for the membrane
-double v_thresh = 0.9;
+double v_thresh = 20;
 double v_reset = 0;
 double v_mem = v_reset;
-double input_current = 1;
+double input_current = 10;
 
-// Set values of R and C to calculate the time constant
-double r = 1.0;
-double c = 0.0009;
-double tc = 1/(r*c);
+// Set value of time constant
+double tc = 1000;
 
 // Set the time step to calculate for
 double dt = 1;
@@ -23,10 +21,9 @@ int main() {
     outfile << "Time,Voltage\n";
 
     // Runs program for ten spikes
-    int spike_counter = 0;
     int counter = 0;
-    while (spike_counter < 10) {
-        v_mem += (dt / tc) * (input_current * r - v_mem);
+    while (counter < 1000) {
+        v_mem += ((input_current*20 - v_mem)/1024);
         cout << v_mem << " ";
 
         outfile << counter << "," << v_mem << "\n";
@@ -36,7 +33,6 @@ int main() {
             // Reset the membrane potential
             v_mem = v_reset;
             cout << "\nSpike" << endl;
-            spike_counter++;
         }
         cout << "\n";
 
