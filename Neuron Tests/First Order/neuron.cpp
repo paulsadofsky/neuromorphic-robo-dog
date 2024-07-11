@@ -17,9 +17,9 @@ double tc = 1/(r*c);
 double dt = 12;
 
 int main() {
-    // Runs program for five spikes
+    // Runs program for ten spikes
     int spike_counter = 0;
-    while (spike_counter < 5) {
+    while (spike_counter < 10) {
         v_mem += (dt / tc) * (input_current * r - v_mem);
         cout << v_mem << " ";
     
