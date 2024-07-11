@@ -5,11 +5,8 @@ using namespace std;
 
 double alpha= -2.0;
 double delta = -1.5;
-double beta = -2;
+// double beta = -2;
 double tanh_r, pwl_r;
-
-// Boolean to toggle between using PWL and tanh function
-bool usePWL = true;
 
 int main() {
     // Initiallize output .csv file
@@ -19,8 +16,8 @@ int main() {
 
     for (int a = -20; a < 21; a++) {
 
-        double lower_bound = -(alpha/beta) + delta;
-        double upper_bound = (alpha/beta) + delta;
+        double lower_bound = -1 + delta;
+        double upper_bound = 1 + delta;
         if (a < lower_bound) {
             pwl_r = -1*alpha;
         }
@@ -28,7 +25,7 @@ int main() {
             pwl_r = alpha;
         }
         else {
-            pwl_r = beta*(a - delta);
+            pwl_r = alpha*(a - delta);
         }
 
         tanh_r = alpha*tanh(a - delta);
