@@ -5,28 +5,41 @@ module MTF_neuron (
     input wire [7:0] thresh,
     input wire [7:0] alpha [3:0],
     input wire [7:0] delta [3:0],
-    input wire [7:0] tau [2:0],
+    input wire [15:0] tau [2:0],
     output reg spike,
     output reg [7:0] voltage);
 
-    reg current_sum;
+    reg [7:0] current_sum;
+    reg [15:0] v_x [2:0];
+    reg [15:0] i_x [3:0];
 
     always @(posedge clk) begin
         if (reset) begin
-            voltage <= 16'd0;
-            current_sum <= 0;
+            v_x[2] = 16'd0;
+            v_x[1] = 16'd0;
+            v_x[0] = 16'd0;
+            i_x[3] = 16'd0;
+            i_x[2] = 16'd0;
+            i_x[1] = 16'd0;
+            i_x[0] = 16'd0;
+
+            voltage <= 8'd0;
+
+            current_sum <= 8'd0;
             spike <= 0;
         end
         else begin
-            voltage <= voltage + ((i_ext*20 - voltage) >> 3);
-            
-            if (voltage >= thresh) begin
-                spike <= 1;
-                voltage <= 0;
-            end
-            else begin
-                spike <= 0;
-            end
+            voltage <= voltage + ((i_ext*20 - voltage - current_sum) >> 3);
         end
+    end
+
+    // Calculating v_x values
+    always @(posedge clk) begin
+        
+    end
+
+    // Calculating i_x values
+    always @(posedge clk) begin
+        
     end
 endmodule
