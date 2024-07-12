@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module lif_tb ();
-     reg clock;
+     reg clk;
      reg reset;
      reg [7:0] i_ext = 7'd10;
      reg [7:0] thresh = 7'd20;
@@ -12,7 +12,7 @@ module lif_tb ();
     integer fspike;
     
     LIF_neuron lif1 (
-        .clk(clock),
+        .clk(clk),
         .reset(reset),
         .i_ext(i_ext),
         .thresh(thresh),
