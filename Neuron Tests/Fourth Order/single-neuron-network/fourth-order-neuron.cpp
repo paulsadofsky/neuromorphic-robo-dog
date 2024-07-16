@@ -8,7 +8,7 @@ double v_mem = -1;
 double ext_current = -3.0;
 
 // Set value of time step
-double dt = 1.0;
+double dt = 2.0;
 
 // Sets the three time constant values, with each increasing index correlating to f, s and us respectively
 // Initiallizes each voltage with the same respective index assignment
