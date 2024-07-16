@@ -85,4 +85,4 @@ module MTF_neuron (
             current_sum <= current_sum + i_x[j];
         end
     end
-endmodulev
+endmodule
