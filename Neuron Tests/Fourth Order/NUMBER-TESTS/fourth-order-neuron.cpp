@@ -5,20 +5,20 @@ using namespace std;
 
 // Input current for the membrane
 double v_mem = -1;
-double ext_current = -1.5;
+double ext_current = -2;
 
 // Set value of time step
 double dt = 0.5;
 
 // Sets the three time constant values, with each increasing index correlating to f, s and us respectively
 // Initiallizes each voltage with the same respective index assignment
-double tau_x[3] = {1, 50, 2500.0};
+double tau_x[3] = {1, 155, 4000};
 double v_x[3] = {0, 0, 0};
 
 // Sets the four alpha and delta values, with each increasing index correlating to fn, sp, sn and usp respectively
 // Initiallizes each current with the same respective index assignment
-double alpha_x[4] = {-3.0, 3.0, -1.5, 1.5};
-double delta_x[4] = {0, 0, -1.5, -1.5};
+double alpha_x[4] = {-3.0, 3.0, -2, 2};
+double delta_x[4] = {0, 0, -2, -2};
 // double beta_x[4] = {-2.0, 2.0, -1.5, 1.5};
 double i_x[4];
 double i_sum = 0.0;
