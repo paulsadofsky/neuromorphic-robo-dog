@@ -5,7 +5,7 @@ using namespace std;
 
 // Input current for the membrane
 double v_mem = -1;
-double ext_current = -3.0;
+double ext_current = -4.0;
 
 // Set value of time step
 double dt = 2.0;
