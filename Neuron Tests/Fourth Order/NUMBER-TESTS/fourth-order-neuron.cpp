@@ -8,11 +8,11 @@ double v_mem = -1;
 double ext_current = -2;
 
 // Set value of time step
-double dt = 0.5;
+double dt = 1.0;
 
 // Sets the three time constant values, with each increasing index correlating to f, s and us respectively
 // Initiallizes each voltage with the same respective index assignment
-double tau_x[3] = {1, 155, 4000};
+double tau_x[3] = {1, 128, 4096};
 double v_x[3] = {0, 0, 0};
 
 // Sets the four alpha and delta values, with each increasing index correlating to fn, sp, sn and usp respectively
@@ -36,10 +36,15 @@ int main() {
     for (int a = 0; a < 14000; a++) {
         i_sum = 0;
 
+        // cout << "Vf = " << (v_mem - v_x[0])
+        //      << " | Vs = " << (v_mem - v_x[1])
+        //      << " | Vus = " << (v_mem - v_x[2]) << "\n";
+
         // Calculates each value of v_x
         for(int k = 0; k < 3; k++) {
             v_x[k] += (dt/tau_x[k])*(v_mem - v_x[k]);
         }
+        cout << "Vf = " << v_x[0] << " | Vs = " << v_x[1] << " | Vus = " << v_x[2] << "\n";
 
         for (int i = 0; i < 4; i++) {
             // Sets the appropriate value of v_x and it's corresponding sign
@@ -71,8 +76,8 @@ int main() {
 
         // Calculates the new v membrane and prints to display
         v_mem += dt * (ext_current - v_mem - i_sum);
-        std::cout << v_mem << " ";
-        std::cout << "\n";
+        // std::cout << v_mem << " ";
+        // std::cout << "\n";
         outfile << a << "," << v_mem << "\n";
     }
 
