@@ -2,11 +2,16 @@
 #include "two_mtf_network.h"
 #include <fstream>
 #include <cmath>
+using namespace std;
 
 // Default constructor that dynamically allocates the two neurons for the network
 TwoMTFNetwork::TwoMTFNetwork() {
     FL = new MTFNeuron();
     FR = new MTFNeuron();
+    synapseCurrents[0][0] = 0;
+    synapseCurrents[0][1] = 0;
+    synapseCurrents[1][0] = 0;
+    synapseCurrents[1][1] = 0;
 }
 
 // Default destructor that unallocates the two neurons declared to prevent memory leaks
@@ -32,28 +37,21 @@ double TwoMTFNetwork::sigmoidSynapseFunction(double voltage, double steepness, d
 
 // Calculates the values of each neuron in the network
 void TwoMTFNetwork::calculateNetwork(double timesteps) {
-    double asynMatrix[1][2] = {{1.0, 1.0}};
-    double dsynMatrix[1][2] = {{1.0, 1.0}};
-    double b = 2.0; 
+    FL->clearVoltage();
+    FR->clearVoltage();
     
-
-    /*
-    vm1, vf1, vs1, vus1, vm2, vf2, vs2, vus2, vm3, vf3, vs3, vus3, vm4, vf4, vs4, vus4 =S
-    # Iapp
-    I1=Iapp[0]+asyn[1][0]*sf(vs2,b,dsyn[1][0])+asyn[2][0]*sf(vs3,b,dsyn[2][0])+asyn[3][0]*sf(vs4,b,dsyn[3][0])
-    I2=Iapp[1]+asyn[0][1]*sf(vs1,b,dsyn[0][1])+asyn[2][1]*sf(vs3,b,dsyn[2][1])+asyn[3][1]*sf(vs4,b,dsyn[3][1])
-    I3=Iapp[2]+asyn[0][2]*sf(vs1,b,dsyn[0][2])+asyn[1][2]*sf(vs2,b,dsyn[1][2])+asyn[3][2]*sf(vs4,b,dsyn[3][2])
-    I4=Iapp[3]+asyn[0][3]*sf(vs1,b,dsyn[0][3])+asyn[1][3]*sf(vs2,b,dsyn[1][2])+asyn[2][3]*sf(vs3,b,dsyn[2][3])
-    */
-    std::vector<double> synapseCurrent1(2);
-    std::vector<double> synapseCurrent2(2);
+    double asynMatrix[2][2] = {{0, -0.3},
+                               {-1, 0}};
+    double dsynMatrix[2][2] = {{-1, -1},
+                               {-1, -1}};
+    double b = 2.0; 
 
     for (int i = 0; i < timesteps; i++) {
-        synapseCurrent1 = (-1.5) + (asynMatrix[0][0]) * sigmoidSynapseFunction(FR->getValues(), b, dsynMatrix[0][0]);
-        synapseCurrent2 = (-1.5) + (asynMatrix[0][1]) * sigmoidSynapseFunction(FL->getValues(), b, dsynMatrix[0][1]);
+        synapseCurrents[0][1] = (asynMatrix[0][1]) * sigmoidSynapseFunction(FR->getMembraneVoltage(), b, dsynMatrix[0][1]);
+        synapseCurrents[1][0] = (asynMatrix[1][0]) * sigmoidSynapseFunction(FL->getMembraneVoltage(), b, dsynMatrix[1][0]);
 
-        FL->calculateValues(timesteps, synapseCurrent1);
-        FR->calculateValues(timesteps, synapseCurrent2);
+        FL->calculateValue(synapseCurrents[0][1]);
+        FR->calculateValue(synapseCurrents[1][0]);
     }
 }
 
@@ -62,7 +60,7 @@ void TwoMTFNetwork::exportToCSV() {
     // Initiallize output .csv file
     std::ofstream outfile;
     outfile.open("network-membrane-voltage.csv");
-    outfile << "Time,VoltageFL,VoltageFR,VoltageBL,VoltageBR\n";
+    outfile << "Time,VoltageFL,VoltageFR\n";
     std::vector<double> valFL = FL->getValues();
     std::vector<double> valFR = FR->getValues();
 
@@ -80,7 +78,7 @@ void TwoMTFNetwork::exportToCSV(int offset) {
     // Initiallize output .csv file
     std::ofstream outfile;
     outfile.open("network-membrane-voltage.csv");
-    outfile << "Time,VoltageFL,VoltageFR,VoltageBL,VoltageBR\n";
+    outfile << "Time,VoltageFL,VoltageFR\n";
     std::vector<double> valFL = FL->getValues();
     std::vector<double> valFR = FR->getValues();
 

@@ -11,7 +11,7 @@ MTFNeuron::MTFNeuron() {
     setDelta(0, 0, -1.5, -1.5);
     setTau(1, 50, 2500);
     setInitV(-1, 0, 0, 0);
-    setExtCurrent(-1.5);
+    setExtCurrent(-1.8);
     setTimeStep(0.5);
     togglePWL(true);
 }
@@ -78,52 +78,46 @@ void MTFNeuron::togglePWL(bool togPWL) {
     usePWL = togPWL;
 }
 
-// Calculating the values based on the equations in the ICONS paper
-void MTFNeuron::calculateValues(int timesteps, double synapseCurrent) {
+// NOT IN USE: Calculating the values based on the equations in the ICONS paper
+void MTFNeuron::calculateValue(double synapseCurrent) {
     double i_x[4];
     double i_sum = 0.0;
     double v_temp = 0.0;
 
-    // calculatedVal.clear();
+    i_sum = 0;
 
-        i_sum = 0;
+    // Calculates each value of v_x
+    for(int j = 0; j < 3; j++) {
+        vx[j] += (dt/tau[j])*(vmem - vx[j]);
+    }
 
-        // Calculates each value of v_x
-        for(int j = 0; j < 3; j++) {
-            vx[j] += (dt/tau[j])*(vmem - vx[j]);
+    for (int k = 0; k < 4; k++) {
+        // Sets the appropriate value of v_x and it's corresponding sign
+        if (k <= 1) { v_temp = vx[k]; }
+        else { v_temp = vx[k-1]; }
+        
+        // PWL FUNCTION
+        double lower_bound = -1 + dx[k];
+        double upper_bound = 1 + dx[k];
+        if (v_temp < lower_bound) {
+            i_x[k] = -1*ax[k];
+        }
+        else if (v_temp > upper_bound) {
+            i_x[k] = ax[k];
+        }
+        else {
+            i_x[k] = ax[k]*(v_temp - dx[k]);
         }
 
-        for (int k = 0; k < 4; k++) {
-            // Sets the appropriate value of v_x and it's corresponding sign
-            if (k <= 1) { v_temp = vx[k]; }
-            else { v_temp = vx[k-1]; }
-            
-            if (usePWL) {
-                // PWL FUNCTION
-                double lower_bound = -1 + dx[k];
-                double upper_bound = 1 + dx[k];
-                if (v_temp < lower_bound) {
-                    i_x[k] = -1*ax[k];
-                }
-                else if (v_temp > upper_bound) {
-                    i_x[k] = ax[k];
-                }
-                else {
-                    i_x[k] = ax[k]*(v_temp - dx[k]);
-                }
-            }
-            else {
-                // TANH FUNCTION
-                i_x[k] = ax[k]*tanh(v_temp - dx[k]);
-            }
+        // Sums the current
+        i_sum += i_x[k];
+    }
 
-            // Sums the current
-            i_sum += i_x[k];
-        }
+    appi = exti + synapseCurrent;
 
-        // Calculates the new v membrane and prints to display
-        vmem += dt * (exti - vmem - i_sum) + synapseCurrent;
-        calculatedVal.push_back(vmem);
+    // Calculates the new v membrane and prints to display
+    vmem += dt * (appi - vmem - i_sum);
+    calculatedVal.push_back(vmem);
 }
 
 // Accessor function for the vector of calculated values
@@ -133,6 +127,10 @@ std::vector<double> MTFNeuron::getValues() {
 
 double MTFNeuron::getAppliedCurrent() {
     return appi;
+}
+
+double MTFNeuron::getMembraneVoltage() {
+    return vmem;
 }
 
 // Writes calculated neuron values to CSV for individual testing
@@ -147,4 +145,8 @@ void MTFNeuron::exportToCSV() {
     }
 
     outfile.close();
+}
+
+void MTFNeuron::clearVoltage() {
+    calculatedVal.clear();
 }

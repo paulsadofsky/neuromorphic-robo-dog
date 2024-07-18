@@ -22,11 +22,13 @@ class MTFNeuron {
         void setBeta(double);
         void setSynapseCurrent(double);
         void togglePWL(bool);
-        void calculateValues(int, double);
+        void calculateValue(double);
         std::vector<double> getValues();
         double getAppliedCurrent();
         double getExtCurrent();
+        double getMembraneVoltage();
         void exportToCSV();
+        void clearVoltage();
 };
 
 #endif

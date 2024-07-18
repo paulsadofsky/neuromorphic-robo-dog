@@ -7,6 +7,7 @@ class TwoMTFNetwork {
     private:
         MTFNeuron *FL, *FR;
         double timestep;
+        double synapseCurrents[2][2];
     public:
         TwoMTFNetwork();
         ~TwoMTFNetwork();

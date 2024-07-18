@@ -50,7 +50,6 @@ def dsdt(t,S):
             -vm3-alpha[0]*np.tanh(vf3-delta[0])-alpha[1]*np.tanh(vs3-delta[1])-alpha[2]*np.tanh(vs3-delta[2])-alpha[3]*np.tanh(vus3-delta[3])+Isyn3,vm3-vf3,(vm3-vs3)/50,(vm3-vus3)/2500,
             -vm4-alpha[0]*np.tanh(vf4-delta[0])-alpha[1]*np.tanh(vs4-delta[1])-alpha[2]*np.tanh(vs4-delta[2])-alpha[3]*np.tanh(vus4-delta[3])+Isyn4,vm4-vf4,(vm4-vs4)/50,(vm4-vus4)/2500]
 
-
 vm1_0, vf1_0, vs1_0, vus1_0 = -1,0,0,0
 vm2_0, vf2_0, vs2_0, vus2_0 = -1,0,0,0
 vm3_0, vf3_0, vs3_0, vus3_0 = -1,0,0,0
