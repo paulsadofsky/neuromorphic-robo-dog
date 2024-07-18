@@ -39,9 +39,9 @@ double TwoMTFNetwork::sigmoidSynapseFunction(double voltage, double steepness, d
 void TwoMTFNetwork::calculateNetwork(double timesteps) {
     FL->clearVoltage();
     FR->clearVoltage();
-    
-    double asynMatrix[2][2] = {{0, -0.3},
-                               {-1, 0}};
+
+    double asynMatrix[2][2] = {{0, 0.3},
+                               {-0.3, 0}};
     double dsynMatrix[2][2] = {{-1, -1},
                                {-1, -1}};
     double b = 2.0; 

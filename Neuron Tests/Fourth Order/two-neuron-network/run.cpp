@@ -9,7 +9,7 @@ int main() {
     TwoMTFNetwork network;
 
     network.calculateNetwork(20000);
-    network.exportToCSV();
+    network.exportToCSV(3000);
     
     return 0;
 }
