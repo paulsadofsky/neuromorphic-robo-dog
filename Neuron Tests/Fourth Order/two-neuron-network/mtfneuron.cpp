@@ -16,11 +16,6 @@ MTFNeuron::MTFNeuron() {
     togglePWL(true);
 }
 
-MTFNeuron::sigmoidSynapseFunction(double voltage, double steepness, double centerPosition) {
-    double k = steepness * (voltage - centerPosition);
-    return 1.0 / (1.0 + std::exp(-k)); 
-}
-
 // Default constructor
 MTFNeuron::~MTFNeuron() {
     calculatedVal.clear();
@@ -33,6 +28,7 @@ void MTFNeuron::setAlpha(double fn, double sp, double sn, double usp) {
     ax[2] = sn;
     ax[3] = usp;
 }
+
 
 // Sets delta values of neuron
 void MTFNeuron::setDelta(double fn, double sp, double sn, double usp) {
@@ -47,14 +43,14 @@ void MTFNeuron::setBeta(double beta) {
     b = beta;
 }
 
-void MTFNeurom::setSynapseCurrent(double exti){
-
-    synapseCurrent= iext+ (asynMatrix[0])*sigmoidSynapseFunction(voltage, steepness, centerPosition) + asynMatrix[0]*sigmoidSynapseFunction(voltage, steepness, centerPosition);
-}
-
 // Sets external current of neuron
 void MTFNeuron::setExtCurrent(double i) {
     exti = i;
+}
+
+// Sets external current of neuron
+void MTFNeuron::getExtCurrent() {
+   return exti;
 }
 
 // Sets timestep of neuron
@@ -83,14 +79,13 @@ void MTFNeuron::togglePWL(bool togPWL) {
 }
 
 // Calculating the values based on the equations in the ICONS paper
-void MTFNeuron::calculateValues(int timesteps) {
+void MTFNeuron::calculateValues(int timesteps, double synapseCurrent) {
     double i_x[4];
     double i_sum = 0.0;
     double v_temp = 0.0;
 
-    calculatedVal.clear();
+    // calculatedVal.clear();
 
-    for (int i = 0; i < timesteps; i++) {
         i_sum = 0;
 
         // Calculates each value of v_x
@@ -129,7 +124,6 @@ void MTFNeuron::calculateValues(int timesteps) {
         // Calculates the new v membrane and prints to display
         vmem += dt * (exti - vmem - i_sum) + synapseCurrent;
         calculatedVal.push_back(vmem);
-    }
 }
 
 // Accessor function for the vector of calculated values

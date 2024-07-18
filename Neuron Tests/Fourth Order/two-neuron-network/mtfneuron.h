@@ -7,15 +7,12 @@ class MTFNeuron {
     private:
         double vmem, vx[3];
         double ax[4], dx[4], b, tau[3];
-        double exti, dt, synapseCurrent;
+        double exti, dt;
         bool usePWL;
-        int asynMatrix[2];
-        int dsynMatrix[2];
         std::vector<double> calculatedVal;
     public:
         MTFNeuron();
         ~MTFNeuron();
-        double sigmoidSynapseFunction(double voltage, double steepness, double centerPosition);
         void setAlpha(double, double, double, double);
         void setDelta(double, double, double, double);
         void setExtCurrent(double);

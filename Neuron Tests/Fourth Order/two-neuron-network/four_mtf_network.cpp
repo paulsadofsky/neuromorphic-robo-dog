@@ -24,10 +24,36 @@ void FourMTFNetwork::setTimeStep(double t) {
     FR->setTimeStep(t);
 }
 
+FourMTFNetwork::sigmoidSynapseFunction(double voltage, double steepness, double centerPosition) {
+    double k = steepness * (voltage - centerPosition);
+    return 1.0 / (1.0 + std::exp(-k)); 
+}
+
 // Calculates the values of each neuron in the network
 void FourMTFNetwork::calculateNetwork(double timesteps) {
-    FL->calculateValues(timesteps);
-    FR->calculateValues(timesteps);
+    double asynMatrix[1][2] = {{1.0, 1.0}};
+    double dsynMatrix[1][2] = {{1.0, 1.0}};
+    double b = 2.0; 
+    
+
+    /*
+    vm1, vf1, vs1, vus1, vm2, vf2, vs2, vus2, vm3, vf3, vs3, vus3, vm4, vf4, vs4, vus4 =S
+    # Iapp
+    I1=Iapp[0]+asyn[1][0]*sf(vs2,b,dsyn[1][0])+asyn[2][0]*sf(vs3,b,dsyn[2][0])+asyn[3][0]*sf(vs4,b,dsyn[3][0])
+    I2=Iapp[1]+asyn[0][1]*sf(vs1,b,dsyn[0][1])+asyn[2][1]*sf(vs3,b,dsyn[2][1])+asyn[3][1]*sf(vs4,b,dsyn[3][1])
+    I3=Iapp[2]+asyn[0][2]*sf(vs1,b,dsyn[0][2])+asyn[1][2]*sf(vs2,b,dsyn[1][2])+asyn[3][2]*sf(vs4,b,dsyn[3][2])
+    I4=Iapp[3]+asyn[0][3]*sf(vs1,b,dsyn[0][3])+asyn[1][3]*sf(vs2,b,dsyn[1][2])+asyn[2][3]*sf(vs3,b,dsyn[2][3])
+    */
+    std::vector<double> synapseCurrent1(2);
+    std::vector<double> synapseCurrent2(2);
+
+    for (int i = 0; i < timesteps; i++) {
+        synapseCurrent1 = (-1.5) + (asynMatrix[0][0]) * sigmoidSynapseFunction(FR->getValues(), b, dsynMatrix[0][0]);
+        synapseCurrent2 = (-1.5) + (asynMatrix[0][1]) * sigmoidSynapseFunction(FL->getValues(), b, dsynMatrix[0][1]);
+
+        FL->calculateValues(timesteps, synapseCurrent1);
+        FR->calculateValues(timesteps, synapseCurrent2);
+    }
 }
 
 // Prints the calculated values to CSV format
