@@ -49,7 +49,7 @@ void MTFNeuron::setExtCurrent(double i) {
 }
 
 // Sets external current of neuron
-void MTFNeuron::getExtCurrent() {
+double MTFNeuron::getExtCurrent() {
    return exti;
 }
 
@@ -129,6 +129,10 @@ void MTFNeuron::calculateValues(int timesteps, double synapseCurrent) {
 // Accessor function for the vector of calculated values
 std::vector<double> MTFNeuron::getValues() {
     return calculatedVal;
+}
+
+double MTFNeuron::getAppliedCurrent() {
+    return appi;
 }
 
 // Writes calculated neuron values to CSV for individual testing

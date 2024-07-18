@@ -7,7 +7,7 @@ class MTFNeuron {
     private:
         double vmem, vx[3];
         double ax[4], dx[4], b, tau[3];
-        double exti, dt;
+        double appi, exti, dt;
         bool usePWL;
         std::vector<double> calculatedVal;
     public:
@@ -22,8 +22,10 @@ class MTFNeuron {
         void setBeta(double);
         void setSynapseCurrent(double);
         void togglePWL(bool);
-        void calculateValues(int);
+        void calculateValues(int, double);
         std::vector<double> getValues();
+        double getAppliedCurrent();
+        double getExtCurrent();
         void exportToCSV();
 };
 

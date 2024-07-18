@@ -1,36 +1,37 @@
 #include "mtfneuron.h"
-#include "four_mtf_network.h"
+#include "two_mtf_network.h"
 #include <fstream>
+#include <cmath>
 
-// Default constructor that dynamically allocates the four neurons for the network
-FourMTFNetwork::FourMTFNetwork() {
+// Default constructor that dynamically allocates the two neurons for the network
+TwoMTFNetwork::TwoMTFNetwork() {
     FL = new MTFNeuron();
     FR = new MTFNeuron();
 }
 
-// Default destructor that unallocates the four neurons declared to prevent memory leaks
-FourMTFNetwork::~FourMTFNetwork() {
+// Default destructor that unallocates the two neurons declared to prevent memory leaks
+TwoMTFNetwork::~TwoMTFNetwork() {
     delete FL;
     delete FR;
 }
 
 // Accessor functions that return the pointers to each neuron in the network
-MTFNeuron* FourMTFNetwork::getFL() { return FL; }
-MTFNeuron* FourMTFNetwork::getFR() { return FR; }
+MTFNeuron* TwoMTFNetwork::getFL() { return FL; }
+MTFNeuron* TwoMTFNetwork::getFR() { return FR; }
 
 // Sets the dt of each neuron
-void FourMTFNetwork::setTimeStep(double t) {
+void TwoMTFNetwork::setTimeStep(double t) {
     FL->setTimeStep(t);
     FR->setTimeStep(t);
 }
 
-FourMTFNetwork::sigmoidSynapseFunction(double voltage, double steepness, double centerPosition) {
+double TwoMTFNetwork::sigmoidSynapseFunction(double voltage, double steepness, double centerPosition) {
     double k = steepness * (voltage - centerPosition);
     return 1.0 / (1.0 + std::exp(-k)); 
 }
 
 // Calculates the values of each neuron in the network
-void FourMTFNetwork::calculateNetwork(double timesteps) {
+void TwoMTFNetwork::calculateNetwork(double timesteps) {
     double asynMatrix[1][2] = {{1.0, 1.0}};
     double dsynMatrix[1][2] = {{1.0, 1.0}};
     double b = 2.0; 
@@ -57,7 +58,7 @@ void FourMTFNetwork::calculateNetwork(double timesteps) {
 }
 
 // Prints the calculated values to CSV format
-void FourMTFNetwork::exportToCSV() {
+void TwoMTFNetwork::exportToCSV() {
     // Initiallize output .csv file
     std::ofstream outfile;
     outfile.open("network-membrane-voltage.csv");
@@ -75,7 +76,7 @@ void FourMTFNetwork::exportToCSV() {
 }
 
 // Prints the calculated values to CSV format with an offset to remove beginning values
-void FourMTFNetwork::exportToCSV(int offset) {
+void TwoMTFNetwork::exportToCSV(int offset) {
     // Initiallize output .csv file
     std::ofstream outfile;
     outfile.open("network-membrane-voltage.csv");

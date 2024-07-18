@@ -1,15 +1,15 @@
-#ifndef FOUR_MTF_NETWORK_H
-#define FOUR_MTF_NETWORK_H
+#ifndef TWO_MTF_NETWORK_H
+#define TWO_MTF_NETWORK_H
 
 #include "mtfneuron.h"
 
-class FourMTFNetwork {
+class TwoMTFNetwork {
     private:
-        MTFNeuron *FL, *FR, *BL, *BR;
+        MTFNeuron *FL, *FR;
         double timestep;
     public:
-        FourMTFNetwork();
-        ~FourMTFNetwork();
+        TwoMTFNetwork();
+        ~TwoMTFNetwork();
 
         MTFNeuron* getFL();
         MTFNeuron* getFR();
@@ -17,6 +17,8 @@ class FourMTFNetwork {
         void setTimeStep(double);
 
         void calculateNetwork(double);
+
+        double sigmoidSynapseFunction(double, double, double);
 
         void exportToCSV();
         void exportToCSV(int);
