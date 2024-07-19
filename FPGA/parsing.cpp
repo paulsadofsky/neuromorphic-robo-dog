@@ -51,10 +51,23 @@ int main() {
             else
             {    
                 numOfCommas++;
-                time.push_back(value);
+                switch(numOfCommas)
+                {
+                    case 1: 
+                        time.push_back(stod(value));
+                        break;
+                    case 2:
+                        frontRight.push_back(stod(value));
+                        break;
+                    case 3:
+                        backRight.push_back(stod(value));
+                        break;
+                    case 4:
+                        frontLeft.push_back(stod(value));
+                        break;
+                        
+                }
             }
-
-                
             
         }
     }
