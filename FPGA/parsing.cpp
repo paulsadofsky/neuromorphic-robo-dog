@@ -47,9 +47,9 @@ int main() {
             value = "";
             if(line[i] != ',' && numOfCommas < 4)
                 value += line[i];
-            if(numOfcommas == 4)
+            if(numOfCommas == 4)
             {
-                value = substr(i,line.length());
+                value = line.substr(i,line.length());
                 backLeft.push_back(stod(value));
             }
             else
@@ -68,11 +68,9 @@ int main() {
                         break;
                     case 4:
                         frontLeft.push_back(stod(value));
-                        break;
-                        
+                        break;    
                 }
-            }
-            
+            } 
         }
     }
 
