@@ -14,8 +14,7 @@ int main() {
         ifstream inputFile("network-membrane-voltage.csv");
 
     // if input file is not valid closing
-        if(!inputFile.is_open())
-        {
+        if(!inputFile.is_open()){
             return 1;
         }
 
@@ -46,8 +45,13 @@ int main() {
         for(int i = 0; i< line.length();i++)
         {
             value = "";
-            if(line[i] != ',')
+            if(line[i] != ',' && numOfCommas < 4)
                 value += line[i];
+            if(numOfcommas == 4)
+            {
+                value = substr(i,line.length());
+                backLeft.push_back(stod(value));
+            }
             else
             {    
                 numOfCommas++;
