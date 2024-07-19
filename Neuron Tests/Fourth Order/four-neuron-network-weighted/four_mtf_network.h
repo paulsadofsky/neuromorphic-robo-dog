@@ -5,7 +5,7 @@
 
 class FourMTFNetwork {
     private:
-        MTFNeuron *FR, *FL, *BR, *BL;
+        MTFNeuron *FL, *FR, *BL, *BR;
         double timestep;
         double synapseCurrents[4][4];
     public:

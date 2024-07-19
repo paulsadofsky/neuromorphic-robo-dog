@@ -8,8 +8,8 @@ using namespace std;
 int main() {
     FourMTFNetwork network;
 
-    network.calculateNetwork(20000);
-    network.exportToCSV(3000);
+    network.calculateNetwork(25000);
+    network.exportToCSV(5000);
     
     return 0;
 }
