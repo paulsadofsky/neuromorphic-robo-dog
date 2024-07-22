@@ -19,19 +19,19 @@ int main() {
         }
 
 
-    // // opening output file to print data to determine if spike or not
-    //     ofstream outfile;
-    //     outfile.open("spikes.csv");
-    //     outfile << "t\tFR\tBR\tFL\tBL\n";
+    // opening output file to print data to determine if spike or not
+    ofstream outfile;
+    // outfile.open("spikes.csv");
+    // outfile << "t,FL,FR,BL,BR";
 
 
 
     // reading in values from network membrane voltage csv and entering values into a vector
     vector<double> time;
-    vector<double> frontRight;
-    vector<double> backRight;
     vector<double> frontLeft;
+    vector<double> frontRight;
     vector<double> backLeft;
+    vector<double> backRight;
 
     string line;
     string value = "";
@@ -42,15 +42,16 @@ int main() {
 
     while(getline(inputFile,line)) 
     {
-        for(int i = 0; i< line.length();i++)
+        for(int i = 0; i < line.length(); i++)
         {
-            value = "";
             if(line[i] != ',' && numOfCommas < 4)
                 value += line[i];
             if(numOfCommas == 4)
             {
                 value = line.substr(i,line.length());
                 backLeft.push_back(stod(value));
+
+                value = "";
             }
             else
             {    
@@ -61,17 +62,27 @@ int main() {
                         time.push_back(stod(value));
                         break;
                     case 2:
-                        frontRight.push_back(stod(value));
+                        frontLeft.push_back(stod(value));
                         break;
                     case 3:
-                        backRight.push_back(stod(value));
+                        frontRight.push_back(stod(value));
                         break;
                     case 4:
-                        frontLeft.push_back(stod(value));
+                        backLeft.push_back(stod(value));
                         break;    
                 }
+
+                value = "";
             } 
         }
+    }
+
+    for (int i = 0; i < time.size(); i++) {
+        cout << time[i] << ","
+             << frontLeft[i] << ","
+             << frontRight[i] << ","
+             << backLeft[i] << ","
+             << backRight[i] << "\n";
     }
 
 
