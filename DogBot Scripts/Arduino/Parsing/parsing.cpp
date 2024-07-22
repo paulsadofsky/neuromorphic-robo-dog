@@ -6,24 +6,23 @@
 #include <sstream>
 using namespace std;
 
-
-
 int main() {
+    // Threshold voltage to count as spike
+    double thresh = 1.0;
 
-    // opening input file to read in angles from csv file 
+    // Opening input file to read in angles from csv file 
         ifstream inputFile("network-membrane-voltage.csv");
 
-    // if input file is not valid closing
+    // If input file is not valid closing
         if(!inputFile.is_open()){
             return 1;
         }
 
-    // opening output file to print data to determine if spike or not
+    // Opening output file to print data to determine if spike or not
         ofstream outfile;
         outfile.open("spikes.txt");
-        // outfile << "t"<<"FR"<<"BR"<<"FL"<<"BL\n";
 
-    // reading in values from network membrane voltage csv and entering values into a vector
+    // Reading in values from network membrane voltage csv and entering values into a vector
     vector<double> time;
     vector<double> frontLeft;
     vector<double> frontRight;
@@ -35,13 +34,16 @@ int main() {
     int numOfCommas = 0;
     double value;
 
-    // reading in first line which is the title of each column, not needed for vectors
+    // Reading in first line which is the title of each column, not needed for vectors
     getline(inputFile,line);
 
+    // Loop for every voltage value
     while(getline(inputFile,line)) 
     {
         strValue = "";
         numOfCommas = 0;
+
+        // Parses through each character of each line to extract values
         for(int i = 0; i< line.length();i++)
         {
             if(line[i] != ',' && numOfCommas < 4)
@@ -79,19 +81,31 @@ int main() {
         }
     }
 
-    for (int i = 0; i < time.size(); i++) {
-        cout << time[i] << ","
-             << frontLeft[i] << ","
-             << frontRight[i] << ","
-             << backLeft[i] << ","
-             << backRight[i] << "\n";
-    }
-
-
-
-    outfile.close();
     inputFile.close();
 
+    // Checks a rising edge over the declared threshold voltage and outputs to the spike file
+    bool activation[4] = {0,0,0,0};
+    int nullCounter = 0;
+    for(int i = 1; i < time.size(); i++) {
+        activation[0] = (frontLeft[i-1] < thresh && frontLeft[i] > thresh);
+        activation[1] = (frontRight[i-1] < thresh && frontRight[i] > thresh);
+        activation[2] = (backLeft[i-1] < thresh && backLeft[i] > thresh);
+        activation[3] = (backRight[i-1] < thresh && backRight[i] > thresh);
 
+        if(!activation[0] && !activation[1] && !activation[2] && !activation[3]) {
+            nullCounter++;
+        }
+        else {
+            outfile << "_" << nullCounter << endl;
+            nullCounter = 0;
+            for (int j = 0; j < 4; j++) {
+                outfile << activation[j];
+            }
+            outfile << endl;
+        }
+    }
+
+    outfile.close();
+    
     return 0;
 }
