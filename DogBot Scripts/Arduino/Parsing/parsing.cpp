@@ -18,13 +18,10 @@ int main() {
             return 1;
         }
 
-
     // opening output file to print data to determine if spike or not
-    ofstream outfile;
-    // outfile.open("spikes.csv");
-    // outfile << "t,FL,FR,BL,BR";
-
-
+        ofstream outfile;
+        outfile.open("spikes.csv");
+        outfile << "t"<<"FR"<<"BR"<<"FL"<<"BL\n";
 
     // reading in values from network membrane voltage csv and entering values into a vector
     vector<double> time;
@@ -34,41 +31,45 @@ int main() {
     vector<double> backRight;
 
     string line;
-    string value = "";
+    string strValue = "";
     int numOfCommas = 0;
+    double value;
 
     // reading in first line which is the title of each column, not needed for vectors
     getline(inputFile,line);
 
     while(getline(inputFile,line)) 
     {
-        for(int i = 0; i < line.length(); i++)
+        strValue = "";
+        numOfCommas = 0;
+        for(int i = 0; i< line.length();i++)
         {
+
             if(line[i] != ',' && numOfCommas < 4)
-                value += line[i];
+                strValue += line[i];
             if(numOfCommas == 4)
             {
-                value = line.substr(i,line.length());
-                backLeft.push_back(stod(value));
-
-                value = "";
+                strValue = line.substr(i,line.length());
+                value = stod(strValue);
+                backLeft.push_back(value);
             }
             else
             {    
+                value = stod(strValue);
                 numOfCommas++;
                 switch(numOfCommas)
                 {
                     case 1: 
-                        time.push_back(stod(value));
+                        time.push_back(value);
                         break;
                     case 2:
-                        frontLeft.push_back(stod(value));
+                        frontRight.push_back(value);
                         break;
                     case 3:
-                        frontRight.push_back(stod(value));
+                        backRight.push_back(value);
                         break;
                     case 4:
-                        backLeft.push_back(stod(value));
+                        frontLeft.push_back(value);
                         break;    
                 }
 
@@ -87,10 +88,9 @@ int main() {
 
 
 
-    //outfile.close();
+    outfile.close();
     inputFile.close();
 
 
     return 0;
 }
-
