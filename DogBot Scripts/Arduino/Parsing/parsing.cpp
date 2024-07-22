@@ -73,7 +73,7 @@ int main() {
                         break;    
                 }
 
-                value = "";
+                // value = "";
             } 
         }
     }
