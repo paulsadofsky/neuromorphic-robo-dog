@@ -92,6 +92,7 @@ int main() {
         activation[2] = (backLeft[i-1] < thresh && backLeft[i] > thresh);
         activation[3] = (backRight[i-1] < thresh && backRight[i] > thresh);
 
+        // If the activations are all zero, then a counter increments and outputs the number of zero activations at the next neuron firing
         if(!activation[0] && !activation[1] && !activation[2] && !activation[3]) {
             nullCounter++;
         }
