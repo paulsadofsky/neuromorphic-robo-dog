@@ -20,8 +20,8 @@ int main() {
 
     // opening output file to print data to determine if spike or not
         ofstream outfile;
-        outfile.open("spikes.csv");
-        outfile << "t"<<"FR"<<"BR"<<"FL"<<"BL\n";
+        outfile.open("spikes.txt");
+        // outfile << "t"<<"FR"<<"BR"<<"FL"<<"BL\n";
 
     // reading in values from network membrane voltage csv and entering values into a vector
     vector<double> time;
@@ -44,14 +44,15 @@ int main() {
         numOfCommas = 0;
         for(int i = 0; i< line.length();i++)
         {
-
             if(line[i] != ',' && numOfCommas < 4)
                 strValue += line[i];
-            if(numOfCommas == 4)
+            else if(numOfCommas == 4)
             {
                 strValue = line.substr(i,line.length());
                 value = stod(strValue);
-                backLeft.push_back(value);
+                backRight.push_back(value);
+                strValue = "";
+                i = line.length();
             }
             else
             {    
@@ -63,17 +64,17 @@ int main() {
                         time.push_back(value);
                         break;
                     case 2:
-                        frontRight.push_back(value);
+                        frontLeft.push_back(value);
                         break;
                     case 3:
-                        backRight.push_back(value);
+                        frontRight.push_back(value);
                         break;
                     case 4:
-                        frontLeft.push_back(value);
+                        backLeft.push_back(value);
                         break;    
                 }
 
-                // value = "";
+                strValue = "";
             } 
         }
     }
