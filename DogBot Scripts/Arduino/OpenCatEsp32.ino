@@ -1,4 +1,6 @@
-// modify the model and board definitions
+// THE BEGINNING IS ALL PROVIDED STARTED CODE
+// DOWN BELOW IS THE ACTUAL FUNCTION
+
 //***********************
 #define BITTLE  // Petoi 9 DOF robot dog: 1 on head + 8 on leg
 // #define NYBBLE // Petoi 11 DOF robot cat: 2 on head + 1 on tail + 8 on leg
@@ -54,28 +56,22 @@ void loop() {
   reaction();
 }
 
-// enter XQ in the serial monitor to activate the following section
+//---------------------------------------------------------------//
+//                         EXECUTED CODE                         //
+//---------------------------------------------------------------//
+
 #ifdef QUICK_DEMO
 void quickDemo() {
 
   // Make the robot stand up
-  tQueue->addTask(T_SKILL, "up", 5000);
+  tQueue->addTask(T_SKILL, "up", 1000);
 
-  String clock = "_736_1001_202_1001_169_1001_165_1001_162_1001_161_1001_163_1001_189_1001_237_1001_633_0110_185_0110_154_0110_154_0110_152_0110_153_0110_156_0110_183_0110_245_0110_1442_1001_203_1001_170_1001_165_1001_163_1001_161_1001_161_1001_182_1001_226_1001_1220_0110_179_0110_153_0110_153_0110_152_0110_160_0110_195_0110_279_0110_401_";
-  int zeroActivation[100];
-  int activation[100][4];
-  int indexCounter = 0;
+  // Initializes variables for the cycles of zero activations and the neuron activations
+  int zeroActivation[36] = {202,169,165,162,161,163,189,237,633,185,154,154,152,153,156,183,245,1442,203,170,165,163,161,161,182,226,1220,179,153,153,152,160,195,279,279};
+  int activation[35][4] = {{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,}};
+  int indexCounter = 36;
   
-  for (int i = 0; i < clock.length(); i+=9) {
-    zeroActivation[indexCounter] = clock.substring(i+1,i+4).toInt();
-    activation[indexCounter][0] = clock.substring(i+5,i+6).toInt();
-    activation[indexCounter][1] = clock.substring(i+6,i+7).toInt();
-    activation[indexCounter][2] = clock.substring(i+7,i+8).toInt();
-    activation[indexCounter][3] = clock.substring(i+8,i+9).toInt();
-    indexCounter++;
-  }
-  zeroActivation[indexCounter] = clock.substring(clock.length()-4, clock.length()-1).toInt();
-
+  // Motor angles from the original open source code
   int motorAngles[27][8] = {{10, 29, 51, 46, 33, 30, 4,  15},
                             {9,  31, 48, 47, 41, 29, 3,  16},
                             {10, 31, 43, 48, 40, 29, 3,  16},
@@ -104,53 +100,90 @@ void quickDemo() {
                             {21, 28, 56, 44, 21, 30, 6,  15},
                             {15, 28, 52, 45, 27, 30, 5,  15}};
 
-  int zeroCounter = 0;
+  // Four integers to track which step in the walk cycle each neuron is at
   int neuronAngleCount[4] = {0,0,0,0};
   String tempArgs = "";
-  
+
+  // Repeats walk cycle ten times
   for (int i = 0; i < 10; i++) {
+    // Iterates through each zero activation and activation
     for (int j = 0; j < indexCounter; j++) {
-      for (int k = 0; k < zeroActivation[j]; k++) {
-        // Do nothing (waste clock cycles)
-      }
+      // Delay the program for the zero activation time cycles
+//      for (int k = 0; k < zeroActivation[j]; k++) {
+//        // Do nothing (waste clock cycles)
+//        delay(1);
+//      }
+
+      // ------------------------------ FL neuron activation (motor 8/12)
       
-      if (activation[j][0] == 1) {  // FL neuron activation
-        for (int k = 0; k < 3; k++) {
-          tempArgs = "8, " + String(motorAngles[neuronAngleCount[0]][0]) + ", 9, " + String(motorAngles[neuronAngleCount[0]][1]);
-          tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
-          neuronAngleCount[0]++;
-        }
-      }
-      
-      if (activation[j][1] == 1) {  // FR neuron activation
-        for (int k = 0; k < 3; k++) {
-          tempArgs = "10, " + String(motorAngles[neuronAngleCount[1]][2]) + ", 11, " + String(motorAngles[neuronAngleCount[1]][3]);
-          tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
-          neuronAngleCount[1]++;
-        }
-      }
-      
-      if (activation[j][2] == 1) {  // BL neuron activation
-        for (int k = 0; k < 3; k++) {
-          tempArgs = "12, " + String(motorAngles[neuronAngleCount[2]][4]) + ", 13, " + String(motorAngles[neuronAngleCount[2]][5]);
-          tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
-          neuronAngleCount[2]++;
-        }
-      }
-      
-      if (activation[j][3] == 1) {  // BR neuron activation
-        for (int k = 0; k < 3; k++) {
-          tempArgs = "14, " + String(motorAngles[neuronAngleCount[3]][6]) + ", 15, " + String(motorAngles[neuronAngleCount[3]][7]);
-          tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
-          neuronAngleCount[3]++;
-        }
+      if (activation[j][0] == 1) {
+        tempArgs = "8, " + String(motorAngles[neuronAngleCount[0]][0]) + ", 12, " + String(motorAngles[neuronAngleCount[0]][4]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[0]++;
+
+        tempArgs = "8, " + String(motorAngles[neuronAngleCount[0]][0]) + ", 12, " + String(motorAngles[neuronAngleCount[0]][4]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[0]++;
+        
+        tempArgs = "8, " + String(motorAngles[neuronAngleCount[0]][0]) + ", 12, " + String(motorAngles[neuronAngleCount[0]][4]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[0]++;
       }
 
-      for (int k = 0; k < 4; k++) {
-        if(neuronAngleCount[k] == 27) {
-          neuronAngleCount[k] = 0;
-        }
+      // ------------------------------ FR neuron activation (motor 9/13)
+      
+      if (activation[j][1] == 1) {
+        tempArgs = "9, " + String(motorAngles[neuronAngleCount[1]][1]) + ", 13, " + String(motorAngles[neuronAngleCount[1]][5]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[1]++;
+
+        tempArgs = "9, " + String(motorAngles[neuronAngleCount[1]][1]) + ", 13, " + String(motorAngles[neuronAngleCount[1]][5]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[1]++;
+
+        tempArgs = "9, " + String(motorAngles[neuronAngleCount[1]][1]) + ", 13, " + String(motorAngles[neuronAngleCount[1]][5]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[1]++;
       }
+
+      // ------------------------------ BL neuron activation (motor 11/15)
+      
+      if (activation[j][2] == 1) {
+        tempArgs = "11, " + String(motorAngles[neuronAngleCount[2]][3]) + ", 15, " + String(motorAngles[neuronAngleCount[2]][7]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[2]++;
+
+        tempArgs = "11, " + String(motorAngles[neuronAngleCount[2]][3]) + ", 15, " + String(motorAngles[neuronAngleCount[2]][7]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[2]++;
+
+        tempArgs = "11, " + String(motorAngles[neuronAngleCount[2]][3]) + ", 15, " + String(motorAngles[neuronAngleCount[2]][7]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[2]++;
+      }
+
+      // ------------------------------ BR neuron activation (motor 10/14)
+      
+      if (activation[j][3] == 1) {
+        tempArgs = "10, " + String(motorAngles[neuronAngleCount[3]][2]) + ", 14, " + String(motorAngles[neuronAngleCount[3]][6]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[3]++;
+
+        tempArgs = "10, " + String(motorAngles[neuronAngleCount[3]][2]) + ", 14, " + String(motorAngles[neuronAngleCount[3]][6]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[3]++;
+
+        tempArgs = "10, " + String(motorAngles[neuronAngleCount[3]][2]) + ", 14, " + String(motorAngles[neuronAngleCount[3]][6]);
+        tQueue->addTask(T_INDEXED_SIMULTANEOUS_ASC, tempArgs.c_str(), 0);
+        neuronAngleCount[3]++;
+      }
+
+      // Resets the counters to 0 if index 26 (step 27) is reached
+
+      if(neuronAngleCount[0] == 26) { neuronAngleCount[0] = 0; }
+      if(neuronAngleCount[1] == 26) { neuronAngleCount[1] = 0; }
+      if(neuronAngleCount[2] == 26) { neuronAngleCount[2] = 0; }
+      if(neuronAngleCount[3] == 26) { neuronAngleCount[3] = 0; }
     }
   }
 }
