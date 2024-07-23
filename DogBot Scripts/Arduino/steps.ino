@@ -43,8 +43,8 @@ void loop() {
   Serial.print(", FL: ");
   Serial.println(countFL);
 
-  // Resetting total step counter after reaching 5
-  if (countBR == 5 || countBL == 5 || countFR == 5 || countFL == 5) {
+  // Resetting total step counter after reaching step #
+  if (countBR == steps || countBL == steps || countFR == steps || countFL == steps) {
     countBR = 0;
     countBL = 0;
     countFR = 0;
