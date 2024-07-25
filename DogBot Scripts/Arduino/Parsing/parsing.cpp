@@ -86,6 +86,9 @@ int main() {
     // Checks a rising edge over the declared threshold voltage and outputs to the spike file
     bool activation[4] = {0,0,0,0};
     int nullCounter = 0;
+    int numActivativations = 0;
+    vector<int> zeroActivation;
+    outfile << "activations: {";
     for(int i = 1; i < time.size(); i++) {
         activation[0] = (frontLeft[i-1] < thresh && frontLeft[i] > thresh);
         activation[1] = (frontRight[i-1] < thresh && frontRight[i] > thresh);
@@ -97,14 +100,26 @@ int main() {
             nullCounter++;
         }
         else {
-            outfile << "_" << nullCounter << endl;
+            
+            zeroActivation.push_back(nullCounter);
             nullCounter = 0;
+
+            numActivativations++;
+            outfile << ",{";
             for (int j = 0; j < 4; j++) {
-                outfile << activation[j];
+                outfile << activation[j] << ",";
             }
-            outfile << endl;
+            outfile << "}";
         }
     }
+    outfile << "}\nzeroActivations: {";
+    for(int i = 1; i < zeroActivation.size(); i++) {
+        outfile << zeroActivation[i] << ",";
+    }
+    outfile << zeroActivation[zeroActivation.size()-1] << "}\n";
+
+    outfile << "Number of activations: " << numActivativations << endl;
+    outfile << "Number of non-activation cycles: " << numActivativations+1;
 
     outfile.close();
     

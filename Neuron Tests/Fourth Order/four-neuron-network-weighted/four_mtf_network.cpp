@@ -55,7 +55,7 @@ void FourMTFNetwork::calculateNetwork(double timesteps) {
     double asynMatrix[4][4] = {{ 0,   -0.3, -0.3,  0.3},    // FL
                                {-0.3,  0,   -0.3, -0.3},    // FR
                                {-0.3, -0.3,  0,   -0.3},    // BL
-                               { 0.3, -0.3, -0.3,  0  }};  // BR
+                               { 0.3, -0.3, -0.3,  0  }};   // BR
 
     double dsynMatrix[4][4] = {{ 0, -1, -1, -1},            // FL
                                {-1,  0, -1, -1},            // FR

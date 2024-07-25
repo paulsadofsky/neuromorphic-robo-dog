@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     FourMTFNetwork network;
 
-    network.calculateNetwork(25000);
+    network.calculateNetwork(15000);
     network.exportToCSV(5000);
     
     return 0;
