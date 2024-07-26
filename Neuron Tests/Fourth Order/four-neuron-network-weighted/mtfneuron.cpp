@@ -12,7 +12,7 @@ MTFNeuron::MTFNeuron() {
     setTau(1, 50, 2500);
     setInitV(-1, 0, 0, 0);
     setExtCurrent(-1.8);
-    setTimeStep(0.5);
+    setTimeStep(1);
     togglePWL(true);
 }
 
