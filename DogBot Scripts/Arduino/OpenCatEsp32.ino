@@ -68,7 +68,7 @@ void quickDemo() {
 
   // Initializes variables for the cycles of zero activations and the neuron activations
   // COPY IN OUTPUT OF PARSING SCRIPT HERE
-  int indexCounter = 36;
+  int activations = 36;
   int zeroActivation[indexCounter] = {202,169,165,162,161,163,189,237,633,185,154,154,152,153,156,183,245,1442,203,170,165,163,161,161,182,226,1220,179,153,153,152,160,195,279,279};
   int activation[indexCounter-1][4] = {{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{1,0,0,1,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,},{0,1,1,0,}};
   
@@ -104,6 +104,7 @@ void quickDemo() {
   // Four integers to track which step in the walk cycle each neuron is at
   int neuronAngleCount[4] = {0,0,0,0};
   String tempArgs = "";
+  int indexCounter = activations;
 
   // Repeats walk cycle ten times
   for (int i = 0; i < 10; i++) {
