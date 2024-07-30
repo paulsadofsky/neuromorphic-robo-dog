@@ -87,13 +87,14 @@ int main() {
     bool activation[4] = {0,0,0,0};
     int nullCounter = 0;
     int numActivativations = 0;
+    bool first = true;
     vector<int> zeroActivation;
     outfile << "activations: {";
     for(int i = 1; i < time.size(); i++) {
-        activation[0] = (frontLeft[i-1] < thresh && frontLeft[i] > thresh);
-        activation[1] = (frontRight[i-1] < thresh && frontRight[i] > thresh);
-        activation[2] = (backLeft[i-1] < thresh && backLeft[i] > thresh);
-        activation[3] = (backRight[i-1] < thresh && backRight[i] > thresh);
+        activation[0] = (frontLeft[i-1] < thresh && frontLeft[i] >= thresh);
+        activation[1] = (frontRight[i-1] < thresh && frontRight[i] >= thresh);
+        activation[2] = (backLeft[i-1] < thresh && backLeft[i] >= thresh);
+        activation[3] = (backRight[i-1] < thresh && backRight[i] >= thresh);
 
         // If the activations are all zero, then a counter increments and outputs the number of zero activations at the next neuron firing
         if(!activation[0] && !activation[1] && !activation[2] && !activation[3]) {
@@ -105,7 +106,13 @@ int main() {
             nullCounter = 0;
 
             numActivativations++;
-            outfile << ",{";
+            if (first) {
+                outfile << "{";
+                first = false;
+            }
+            else {
+                outfile << ",{";
+            }
             for (int j = 0; j < 4; j++) {
                 outfile << activation[j] << ",";
             }
