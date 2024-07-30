@@ -2,12 +2,9 @@ module MTF_neuron (
     input wire clk,
     input wire reset,
     input wire [7:0] i_ext,
-    input wire [7:0] thresh,
     input wire [7:0] dt,
     input wire [7:0] afn, asp, asn, ausp, dfn, dsp, dsn, dusp,
-    input wire [15:0] tf, ts, tus,
-    output reg spike,
-    output reg [7:0] voltage);
+    output reg [15:0] voltage);
 
     reg [7:0] current_sum;
     reg [15:0] v_temp;
@@ -30,14 +27,11 @@ module MTF_neuron (
         delta[1] <= dsp;
         delta[2] <= dsn;
         delta[3] <= dusp;
-        
-        tau[0] <= tf;
-        tau[1] <= ts;
-        tau[2] <= tus;
     end
 
     always @(posedge clk) begin
         if (reset) begin
+            // Initialize internal registers to 0
             v_x[2] = 16'd0;
             v_x[1] = 16'd0;
             v_x[0] = 16'd0;
@@ -46,43 +40,38 @@ module MTF_neuron (
             i_x[1] = 16'd0;
             i_x[0] = 16'd0;
 
-            voltage <= 8'd0;
+            voltage <= 16'd0;
             v_temp <= 8'd0;
 
             current_sum <= 8'd0;
-            spike <= 0;
         end
         else begin
-            voltage <= voltage + ((i_ext*20 - voltage - current_sum) >> 3);
-        end
-    end
-
-    // Calculating v_x values
-    always @(posedge clk) begin
-        for (i = 0; i < 3; i=i+1) begin
-            v_x[i] <= v_x[i] + ((dt/tau[i])*(voltage - v_x[i]));
-        end
-    end
-
-    // Calculating i_x values
-    always @(posedge clk) begin
-        current_sum <= 8'd0;
-        
-        for (j = 0; j < 3; j=j+1) begin
-            if (j <= 1) begin v_temp <= v_x[j]; end
-            else begin v_temp <= v_x[j-1]; end
-
-            if (v_temp < (-1 + delta[j])) begin
-                i_x[j] <= -1*alpha[j];
+            // Calculates each V_x
+            v_x[0] <= v_x[0] + ((voltage - v_x[0]));        // Divides by 1 for F time constant
+            v_x[1] <= v_x[1] + ((voltage - v_x[1]) >> 7);   // Divides by 128 for S time constant
+            v_x[2] <= v_x[2] + ((voltage - v_x[2]) >> 12);  // Divides by 4096 for US time constant
+            
+            // PWL function to calculate I_x
+            for (j = 0; j < 3; j=j+1) begin
+                if (j <= 1) begin v_temp <= v_x[j]; end
+                else begin v_temp <= v_x[j-1]; end
+    
+                if (v_temp < (-1 + delta[j])) begin
+                    i_x[j] <= -1*alpha[j];
+                end
+                else if (v_temp > 1 + delta[j]) begin
+                    i_x[j] <= alpha[j];
+                end
+                else begin
+                    i_x[j] <= alpha[j]*(v_temp - delta[j]);
+                end
             end
-            else if (v_temp > 1 + delta[j]) begin
-                i_x[j] <= alpha[j];
-            end
-            else begin
-                i_x[j] <= alpha[j]*(v_temp - delta[j]);
-            end
-
-            current_sum <= current_sum + i_x[j];
+            
+            // Sum of all currents
+            current_sum <= i_x[0] + i_x[1] + i_x[2] + i_x[3];
+            
+            // Calculates news membrane voltage
+            voltage <= voltage + (i_ext - voltage - current_sum);
         end
     end
 endmodule
