@@ -3,21 +3,18 @@
 module MTF_neuron_tb ();
      reg clk;
      reg reset;
-     reg [7:0] i_ext = 8'd10;
-     reg [7:0] thresh = 8'd20;
+     reg [7:0] i_ext = 8'd1;
      reg [7:0] dt;
      reg [7:0] afn, asp, asn, ausp, dfn, dsp, dsn, dusp;
-     reg [15:0] tf, ts, tus;
-     wire spike;
-     wire [7:0] voltage;
-    
-    integer fspike;
+//     reg [15:0] tf, ts, tus;
+     wire [15:0] voltage;
+     
+     integer fvmem;
     
     MTF_neuron mtf1 (
         .clk(clk),
         .reset(reset),
         .i_ext(i_ext),
-        .thresh(thresh),
         .dt(dt),
         .afn(afn),
         .asp(asp),
@@ -27,32 +24,33 @@ module MTF_neuron_tb ();
         .dsp(dsp),
         .dsn(dsn),
         .dusp(dusp),
-        .tf(tf),
-        .ts(ts),
-        .tus(tus),
-        .spike(spike),
+//        .tf(tf),
+//        .ts(ts),
+//        .tus(tus),
         .voltage(voltage)
     );
 
     initial
     begin
+        fvmem = $fopen("output.txt","w");
+    
         clk = 1'b0;
 
-        dt <= ((8'd1) >> 1);            // 0.5
+        dt <= 8'd1;
 
-        afn <= -1*8'd2;            // -2
-        asp <= 8'd2;               // 2
-        asn <= ((-1*8'd3) >> 1);   // -1.5
-        ausp <= ((8'd3) >> 1);      // 1
+        afn <= -1*8'd3;
+        asp <= 8'd3;
+        asn <= -1*8'd2;
+        ausp <= 8'd2;
 
-        dfn <= 8'd0;               // 0
-        dsp <= 8'd0;               // 0
-        dsn <= ((-1*8'd3) >> 1);   // -1.5
-        dusp <= ((-1*8'd3) >> 1);   // -1.5
+        dfn <= 8'd0;
+        dsp <= 8'd0;
+        dsn <= -1*8'd2;
+        dusp <= -1*8'd2;
 
-        tf <= 15'd1;                // 1
-        ts <= 15'd50;               // 50
-        tus <= 15'd2500;             // 2500
+//        tf <= 15'd1;
+//        ts <= 15'd135;
+//        tus <= 15'd3500;
 
         forever
         begin
@@ -62,20 +60,18 @@ module MTF_neuron_tb ();
     
     initial
     begin
-        fspike = $fopen("spike.txt","w");
-
         reset <= 1'b1;
         # 10
         reset <= 1'b0;
 
-        i_ext <= ((-1*8'd3) >> 1);
-        # 300
-        $fclose(fspike);  
+        i_ext <= -1*8'd2;
+        # 990  
+        $fclose(fvmem);
         $finish;
     end
     
-    always @(posedge spike)
+    always @(posedge clk)
     begin
-        $fwrite(fspike,"%t\n",   $realtime);
+        $fwrite(fvmem,"%d\n",voltage);
     end
 endmodule
