@@ -1,3 +1,5 @@
+// Testing file to find close approximation to tanh function using a piecewise linear
+
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -5,7 +7,6 @@ using namespace std;
 
 double alpha= -2.0;
 double delta = -1.5;
-// double beta = -2;
 double tanh_r, pwl_r;
 
 int main() {
