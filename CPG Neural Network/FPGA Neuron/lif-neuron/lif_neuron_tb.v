@@ -5,7 +5,6 @@ module lif_tb ();
      reg reset;
      reg [7:0] i_ext = 7'd10;
      reg [7:0] thresh = 7'd20;
-     //reg [7:0] tau = 7'd0.001;
      wire spike;
      wire [7:0] voltage;
     
@@ -22,6 +21,7 @@ module lif_tb ();
     );
     initial
     begin
+        // Create clock cycle
         clk = 1'b0;
         forever
         begin
@@ -33,6 +33,7 @@ module lif_tb ();
     begin
         fspike = $fopen("spike.txt","w");
 
+        // Runs simulation at 10, 4, and 1 amp of external current
         reset = 1'b1;
         # 10
         reset = 1'b0;
@@ -48,7 +49,6 @@ module lif_tb ();
     
     always @(posedge spike)
     begin
-//        $display("clk out%d\n",   state);
         $fwrite(fspike,"%t\n",   $realtime);
     end
 endmodule
