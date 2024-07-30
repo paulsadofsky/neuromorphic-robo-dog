@@ -6,7 +6,6 @@ module MTF_neuron_tb ();
      reg [7:0] i_ext = 8'd1;
      reg [7:0] dt;
      reg [7:0] afn, asp, asn, ausp, dfn, dsp, dsn, dusp;
-//     reg [15:0] tf, ts, tus;
      wire [15:0] voltage;
      
      integer fvmem;
@@ -24,9 +23,6 @@ module MTF_neuron_tb ();
         .dsp(dsp),
         .dsn(dsn),
         .dusp(dusp),
-//        .tf(tf),
-//        .ts(ts),
-//        .tus(tus),
         .voltage(voltage)
     );
 
@@ -36,21 +32,20 @@ module MTF_neuron_tb ();
     
         clk = 1'b0;
 
+        // Timestep of 1 second
         dt <= 8'd1;
 
+        // alpha = [-3, 3, -2, 2] ([fn, sp, sn, usp])
         afn <= -1*8'd3;
         asp <= 8'd3;
         asn <= -1*8'd2;
         ausp <= 8'd2;
 
+        // delta = [0, 0, -2, -2] ([fn, sp, sn, usp])
         dfn <= 8'd0;
         dsp <= 8'd0;
         dsn <= -1*8'd2;
         dusp <= -1*8'd2;
-
-//        tf <= 15'd1;
-//        ts <= 15'd135;
-//        tus <= 15'd3500;
 
         forever
         begin
@@ -60,6 +55,7 @@ module MTF_neuron_tb ();
     
     initial
     begin
+        // Simulates MTf neuron at -2 amps of external current
         reset <= 1'b1;
         # 10
         reset <= 1'b0;
