@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('Neuron Tests/First Order/voltage.csv')
+df = pd.read_csv('CPG Neural Network/C++ Neuron/First Order/voltage.csv')
 
 time = df['Time']
 voltage = df['Voltage']
@@ -11,5 +11,5 @@ plt.plot(time, voltage)
 plt.xlabel('Time')
 plt.grid(True)
 
-plt.savefig('Neuron Tests/First Order/Plotting/plot.png')
+plt.savefig('CPG Neural Network/C++ Neuron/First Order/Plotting/plot.png')
 plt.show()

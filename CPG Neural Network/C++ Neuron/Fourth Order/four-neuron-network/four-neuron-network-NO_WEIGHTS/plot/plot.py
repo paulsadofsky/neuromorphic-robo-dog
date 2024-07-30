@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('Neuron Tests/Fourth Order/four-neuron-network/network-membrane-voltage.csv')
+df = pd.read_csv('CPG Neural Network/C++ Neuron/Fourth Order/four-neuron-network/four-neuron-network-NO_WEIGHTS/network-membrane-voltage.csv')
 
 # Gets each column of data from the CSV for each voltage at each timestep
 time = df['Time']
@@ -40,4 +40,4 @@ plt.xlabel('Time')
 plt.ylabel('Membrane Voltage (BACK RIGHT)')
 plt.grid(True)
 
-plt.savefig('Neuron Tests/Fourth Order/four-neuron-network/plot/network-plot.png')
+plt.savefig('CPG Neural Network/C++ Neuron/Fourth Order/four-neuron-network/four-neuron-network-NO_WEIGHTS/plot/network-plot.png')
