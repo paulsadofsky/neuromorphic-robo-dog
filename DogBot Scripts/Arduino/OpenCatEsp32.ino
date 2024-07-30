@@ -111,10 +111,10 @@ void quickDemo() {
     // Iterates through each zero activation and activation
     for (int j = 0; j < indexCounter; j++) {
       // Delay the program for the zero activation time cycles
-//      for (int k = 0; k < zeroActivation[j]; k++) {
-//        // Do nothing (waste clock cycles)
-//        delay(1);
-//      }
+     for (int k = 0; k < zeroActivation[j]; k++) {
+       // Do nothing (waste clock cycles)
+       delay(1);
+     }
 
       // ------------------------------ FL neuron activation (motor 8/12)
       
